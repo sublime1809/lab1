@@ -7,7 +7,7 @@ $users = getUsers();
 echo "<ul>";
 foreach($users as  $user) {
     ?>
-    <li><a href="#/user/<?=$user['id']?>"><?=$user['username']?></a></li>
+<li><a href="#/user/<?=$user['id']?>"><?=$user['username']?></a><span><?php if(isset($_COOKIE['userId']) && $user['id'] == $_COOKIE['userId']) echo " - (Myself)"; ?></span></li>
     <?php
 }
 echo "</ul>";

@@ -128,15 +128,24 @@ function CheckInCtrl($scope, $http, $routeParams) {
                     .success(function(data) {
                         var response = data.response;
                         $scope.checkins = response.checkins.items;
+                        if($scope.checkins.length < 1) {
+                            $scope.loadedMsg = "No Checkins.";
+                        }
                     });
             });
     } else {
-        var token = cookies['access_token'];
         $scope.checkins = Array();
-        $http.get('https://api.foursquare.com/v2/users/self/checkins?oauth_token=' + token + '&v=20140203')
+        $http.post('userAjax.php', {method: "getToken", userId: cookies['userId']})
             .success(function(data) {
-                var response = data.response;
-                $scope.checkins = response.checkins.items;
+                var token = data.access_token;
+                $http.get('https://api.foursquare.com/v2/users/self/checkins?oauth_token=' + token + '&v=20140203')
+                    .success(function(data) {
+                        var response = data.response;
+                        $scope.checkins = response.checkins.items;
+                        if($scope.checkins.length < 1) {
+                            $scope.loadedMsg = "No Checkins.";
+                        }
+                    });
             });
     }
 }

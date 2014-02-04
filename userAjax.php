@@ -9,7 +9,7 @@ if(isset($_POST['method'])) {
         $userId = saveUser($username, $password);
 
         setcookie('username', $username);
-        zsetcookie('userId', $userId);
+        setcookie('userId', $userId);
     } elseif($method == "addToken") {
         if(!isset($_COOKIE['userId'])) {
             die('No userId.');
