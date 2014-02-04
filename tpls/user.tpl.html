@@ -1,0 +1,6 @@
+<ul>
+    <li ng-repeat="checkin in checkins">
+        <div class="checkinInfo"><label>Venue: </label><a href="{{checkin.venue.url}}"><span>{{checkin.venue.name}}</span></a></div>
+        <div class="checkinInfo"><label>Time: </label><span>{{checkin.createdAt*1000 | date:medium}}</span></div>
+    </li>
+</ul>
