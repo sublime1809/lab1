@@ -1,8 +1,8 @@
 <span>Welcome, <span ng-if="username">{{username}}</span><span ng-if="!username">Visitor</span>!</span>
 <input type="button" value="{{loginBtnVal}}" ng-click="clickLogin($event)" />
 <form id="loginForm" ng-submit="login()">
-    <label for="username">Username: </label><input ng-model="username" name="username" type="text" />
-    <label for="password">Password: </label><input ng-model="password" name="password" type="password" />
+    <div><label for="username">Username: </label><input ng-model="username" name="username" type="text" /></div>
+    <div><label for="password">Password: </label><input ng-model="password" name="password" type="password" /></div>
     <input type="submit" id="submit" value="{{loginBtnVal}}" />
     <button type="button" name="Create Account" ng-click="createAccount()">Create Account</button>
 </form>

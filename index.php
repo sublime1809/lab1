@@ -15,6 +15,7 @@
     <head>
         <meta charset="UTF-8">
         <title></title>
+        <link href="styles.css" type="text/css" rel="stylesheet" />
         <script src="scripts/lib/angular/angular.js"></script>
         <script src="scripts/lib/angular/angular-route.js"></script>
         <script src="scripts/app.js"></script>
@@ -22,9 +23,13 @@
     </head>
     <body>
         
-        <a href="#/all">View All Users</a>
-        <login></login>
+        <div id="content">
+        <div id="header">
+            <a href="#/all">All Users</a>
+            <login></login>
+        </div>
         <div ng-view></div>
+        </div>
         
     </body>
 </html>
