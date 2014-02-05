@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 if(isset($_POST['method'])) {
     $method = $_POST['method'];
     $result = array();
@@ -44,9 +46,9 @@ if(isset($_POST['method'])) {
 function getUsers() {
     $link = connectDB();
     $query = sprintf("SELECT id, username FROM `foursquare`.`Users`;");
-    $result = mysqli_query($query, $link);
+    $result = $link->query($query);
     $return = array();
-    while( $row = mysqli_fetch_assoc($result) ) {
+    while( $row = $result->fetch_assoc() ) {
         $return[] = $row;
     }
     return $return;
@@ -60,11 +62,10 @@ function getToken($userId) {
     $link = connectDB();
     $query = sprintf("SELECT COUNT(*) as count, access_token FROM `foursquare`.`Users` "
             . "WHERE id = %s;", 
-            mysqli_real_escape_string($userId));
+            $link->real_escape_string($userId));
     
-    $result = mysqli_query($query, $link);
-    $row = mysqli_fetch_assoc($result);
-    
+    $result = $link->query($query);
+    $row = $result->fetch_assoc();    
     if ( mysqli_num_rows($result) > 1 || $row['count'] == 0 ) {
         return false;
     } else {
@@ -75,9 +76,9 @@ function verifyUser($user, $password) {
     $link = connectDB();
     $query = sprintf("SELECT COUNT(*) as count, access_token, id, username FROM `foursquare`.`Users` "
             . "WHERE username = '%s' AND password = '%s';", 
-            mysqli_real_escape_string($user), mysqli_real_escape_string($password));
-    $result = mysqli_query($query, $link);
-    $row = mysqli_fetch_assoc($result);
+            $link->real_escape_string($user), $link->real_escape_string($password));
+    $result = $link->query($query);
+    $row = $result->fetch_assoc();
     if ( mysqli_num_rows($result) > 1 || $row['count'] == 0 ) {
         return false;
     } else {
@@ -92,8 +93,8 @@ function saveUser($user, $password, $access_token = null) {
             `access_token`
         )
         VALUES ('%s', '%s', '%s');", 
-        mysqli_real_escape_string($user), mysqli_real_escape_string($password), mysqli_real_escape_string($access_token));
-    mysqli_query($query, $link);
+        $link->real_escape_string($user), $link->real_escape_string($password), $link->real_escape_string($access_token));
+    $link->query($query);
     $id = mysqli_insert_id();
     closeDB($link);
     return $id;
@@ -101,8 +102,8 @@ function saveUser($user, $password, $access_token = null) {
 function setToken($userId, $access_token) {
     $link = connectDB();
     $query = sprintf("UPDATE  `foursquare`.`Users` SET  `access_token` =  '%s' WHERE  `Users`.`id` = %s;", 
-        mysqli_real_escape_string($access_token), mysqli_real_escape_string($userId));
-    mysqli_query($query, $link);
+        $link->real_escape_string($access_token), $link->real_escape_string($userId));
+    $link->query($query);
     closeDB($link);
 }
 function connectDB() {
