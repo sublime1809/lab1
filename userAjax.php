@@ -12,6 +12,8 @@ if(isset($_POST['method'])) {
 
         setcookie('username', $username);
         setcookie('userId', $userId);
+        $result['userId'] = $userId;
+        $result['username'] = $username;
     } elseif($method == "addToken") {
         if(!isset($_COOKIE['userId'])) {
             die('No userId.');
