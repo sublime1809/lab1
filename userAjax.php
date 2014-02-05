@@ -4,6 +4,7 @@ ini_set('display_errors', 1);
 if(isset($_POST['method'])) {
     $method = $_POST['method'];
     $result = array();
+    echo $_POST['method'];
     if($method == "createAccount") {   
         $username = $_POST['username'];
         $password = $_POST['password'];
@@ -12,8 +13,6 @@ if(isset($_POST['method'])) {
 
         setcookie('username', $username);
         setcookie('userId', $userId);
-        $result['userId'] = $userId;
-        $result['username'] = $username;
     } elseif($method == "addToken") {
         if(!isset($_COOKIE['userId'])) {
             die('No userId.');
@@ -97,7 +96,7 @@ function saveUser($user, $password, $access_token = null) {
         VALUES ('%s', '%s', '%s');", 
         $link->real_escape_string($user), $link->real_escape_string($password), $link->real_escape_string($access_token));
     $link->query($query);
-    $id = $link->insert_id();
+    $id = $link->insert_id;
     closeDB($link);
     return $id;
 }
