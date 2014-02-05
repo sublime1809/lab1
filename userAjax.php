@@ -95,7 +95,7 @@ function saveUser($user, $password, $access_token = null) {
         VALUES ('%s', '%s', '%s');", 
         $link->real_escape_string($user), $link->real_escape_string($password), $link->real_escape_string($access_token));
     $link->query($query);
-    $id = mysqli_insert_id();
+    $id = $link->insert_id();
     closeDB($link);
     return $id;
 }
