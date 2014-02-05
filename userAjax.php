@@ -4,7 +4,6 @@ ini_set('display_errors', 1);
 if(isset($_POST['method'])) {
     $method = $_POST['method'];
     $result = array();
-    echo $_POST['method'];
     if($method == "createAccount") {   
         $username = $_POST['username'];
         $password = $_POST['password'];
