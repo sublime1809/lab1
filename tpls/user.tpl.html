@@ -1,3 +1,5 @@
+<span ng-show="isLoading"> ... Getting Adventures ... </span>
+<span>Adventures for <span ng-if="username">{{username}}</span><span ng-if="!username">Visitor</span></span>
 <ul>
     <li ng-repeat="checkin in checkins">
         <div class="checkinInfo"><label>Venue: </label><a href="{{checkin.venue.url}}"><span>{{checkin.venue.name}}</span></a></div>

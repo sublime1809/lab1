@@ -37,15 +37,26 @@ if(isset($_POST['method'])) {
     } elseif($method == "getToken") {
         $userId = $_POST['userId'];
         $result['access_token'] = getToken($userId);
+    } elseif($method == "getTokenAndUser") {
+        $userId = $_POST['userId'];
+        $result['access_token'] = getToken($userId);
+        $users = getUsers($userId);
+        $result['user'] = (isset($users[0])) ? $users[0]['username'] : '';
     } elseif($method == "getUsers") {
         $result['users'] = getUsers();
     }
     echo json_encode($result);
 }
 
-function getUsers() {
+function getUsers($userId = "") {
     $link = connectDB();
-    $query = sprintf("SELECT id, username FROM `foursquare`.`Users`;");
+    $query;
+    if($userId === "") {
+        $query = sprintf("SELECT id, username FROM `foursquare`.`Users`;");
+    } else {
+        $query = sprintf("SELECT id, username FROM `foursquare`.`Users` WHERE id = '%s';",
+                $link->real_escape_string($userId));
+    }
     $result = $link->query($query);
     $return = array();
     while( $row = $result->fetch_assoc() ) {

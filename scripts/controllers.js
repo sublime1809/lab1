@@ -121,9 +121,11 @@ function CheckInCtrl($scope, $http, $routeParams) {
     $scope.userid = $routeParams.userid;
     $scope.checkins = Array();
     if($routeParams.userid && cookies['userId'] !== $routeParams.userid) {
-        $http.post('userAjax.php', {method: "getToken", userId: $routeParams.userid})
+        $scope.isLoading = true;
+        $http.post('userAjax.php', {method: "getTokenAndUser", userId: $routeParams.userid})
             .success(function(data) {
                 var token = data.access_token;
+                $scope.username = data.user;
                 $http.get('https://api.foursquare.com/v2/users/self/checkins?limit=1&oauth_token=' + token + '&v=20140203')
                     .success(function(data) {
                         var response = data.response;
@@ -131,10 +133,17 @@ function CheckInCtrl($scope, $http, $routeParams) {
                         if($scope.checkins.length < 1) {
                             $scope.loadedMsg = "No Checkins.";
                         }
+                        $scope.isLoading = false;
+                    }).error(function() {
+                        $scope.loadedMsg = "Error getting information from Foursquare.";
                     });
+            }).error(function() {
+                $scope.loadedMsg = "Error getting token.";
             });
     } else {
         $scope.checkins = Array();
+        $scope.isLoading = true;
+        $scope.username = cookies['username'];
         $http.post('userAjax.php', {method: "getToken", userId: cookies['userId']})
             .success(function(data) {
                 var token = data.access_token;
@@ -145,7 +154,12 @@ function CheckInCtrl($scope, $http, $routeParams) {
                         if($scope.checkins.length < 1) {
                             $scope.loadedMsg = "No Checkins.";
                         }
+                        $scope.isLoading = false;
+                    }).error(function() {
+                        $scope.loadedMsg = "Error getting information from Foursquare.";
                     });
+            }).error(function() {
+                $scope.loadedMsg = "Error getting token.";
             });
     }
 }
